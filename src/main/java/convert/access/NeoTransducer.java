@@ -28,7 +28,7 @@ public class NeoTransducer {
         this.nss = nss;
     }
 
-    public NeoTransducer importObjects(Map<String, Map<String, Set<String>>> objects, Session session) {
+    public NeoTransducer importNodes(Map<String, Map<String, Set<String>>> objects, Session session) {
 
         objects.forEach(
                 (subject, props) -> {

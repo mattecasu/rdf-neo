@@ -2,7 +2,6 @@ package convert;
 
 import convert.access.FileModelGetter;
 import convert.access.NeoTransducer;
-import lombok.extern.slf4j.Slf4j;
 import org.eclipse.rdf4j.rio.RDFFormat;
 import org.neo4j.driver.v1.AuthTokens;
 import org.neo4j.driver.v1.Driver;
@@ -16,7 +15,7 @@ import java.util.Properties;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-@Slf4j
+
 public class RdfToNeoImporter {
 
     public static void main(String... args) throws IOException {
@@ -40,7 +39,7 @@ public class RdfToNeoImporter {
 
         new NeoTransducer(iriField, modelGetter.getNss())
                 .clearDb(session)
-                .importObjects(modelGetter.getObjects(), session)
+                .importNodes(modelGetter.getObjects(), session)
                 .importRelations(modelGetter.getRelations(), session);
 
         session.close();

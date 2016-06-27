@@ -58,13 +58,14 @@ public class NeoTransducer {
     public NeoTransducer importRelations(Collection<Triple> relations, Session session) {
         relations.stream().forEach(rel -> {
             session.run(
-                    String.format("MATCH (n {%s:\"%s\"}) , (m {%s:\"%s\"}) create (n)-[:%s]->(m);",
+                    String.format("MATCH (n {%s:\"%s\"}) , (m {%s:\"%s\"}) create (n)-[:%s {%s:\"%s\"}]->(m);",
                             iriField,
                             rel.getLeft(),
                             iriField,
                             rel.getRight(),
-                            getCurie(nss, rel.getMiddle().toString()
-                            )
+                            getCurie(nss, rel.getMiddle().toString()),
+                            iriField,
+                            rel.getMiddle().toString()
                     )
             );
         });

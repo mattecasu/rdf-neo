@@ -15,8 +15,9 @@ import org.eclipse.rdf4j.rio.Rio;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Path;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,13 +33,14 @@ public class FileModelGetter {
     @Getter
     private final Model model = new LinkedHashModel();
 
-    public FileModelGetter(List<String> paths, RDFFormat format) {
+    public FileModelGetter(DirectoryStream<Path> paths, RDFFormat format) {
         paths.forEach(
                 path -> {
                     try {
-                        Model parsedModel = Rio.parse(new FileInputStream(path), "", format);
+                        Model parsedModel = Rio.parse(new FileInputStream(path.toFile()), "", format);
                         model.addAll(parsedModel);
                         parsedModel.getNamespaces().forEach(ns -> model.setNamespace(ns));
+                        model.setNamespace("rdf", RDF.NAMESPACE);
                     } catch (IOException e) {
                         log.warn("Problems in loading file " + path + ". It will be ignored.");
                     }

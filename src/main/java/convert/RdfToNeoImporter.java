@@ -10,10 +10,11 @@ import org.neo4j.driver.v1.Session;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 
 public class RdfToNeoImporter {
@@ -28,7 +29,11 @@ public class RdfToNeoImporter {
         String neoPwd = props.getProperty("neo.password");
         String host = props.getProperty("neo.host");
         String iriField = props.getProperty("irifield");
-        List<String> rdfFiles = newArrayList(props.getProperty("files"));
+
+        DirectoryStream<Path> rdfFiles = Files.newDirectoryStream(
+                Paths.get(props.getProperty("filesFolder")),
+                "*.{ttl}"
+        );
 
         inputStream.close();
 

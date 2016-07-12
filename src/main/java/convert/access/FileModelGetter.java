@@ -20,7 +20,6 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static com.google.common.collect.Maps.newHashMap;
 import static java.util.stream.Collectors.groupingBy;
@@ -67,7 +66,7 @@ public class FileModelGetter {
                 .stream()
                 .filter(st -> st.getSubject() instanceof IRI && st.getObject() instanceof IRI)
                 .map(st -> ImmutableTriple.of(st.getSubject(), st.getPredicate(), st.getObject()))
-                .collect(Collectors.toSet());
+                .collect(toSet());
     }
 
 

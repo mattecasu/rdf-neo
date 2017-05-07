@@ -40,6 +40,7 @@ public class RdfToNeoImporter {
         FileModelGetter modelGetter = new FileModelGetter(rdfFiles, RDFFormat.TURTLE);
 
         Driver driver = GraphDatabase.driver("bolt://" + host, AuthTokens.basic(neoUser, neoPwd));
+
         Session session = driver.session();
 
         new NeoTransducer(iriField, modelGetter.getNss())

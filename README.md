@@ -2,7 +2,12 @@
 Importer RDF2Neo4j
 
 ## Run
-Change application.properties if needed, and then Run RdfToNeoImporter's main.<br/>
+Change application.properties if needed, and then Run RdfToNeoImporter's main,
+e.g. with
+```bash
+mvn clean compile exec:java -Dexec.mainClass="convert.RdfToNeoImporter"
+```
+
 The files are assumed to be in Turtle format.<br/>
 The script assumes a running Neo4j server on port 7474 (the host is specified via properties).
 

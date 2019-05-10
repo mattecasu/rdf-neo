@@ -5,7 +5,7 @@ Importer RDF2Neo4j
 Change application.properties if needed, and then Run RdfToNeoImporter's main,
 e.g. with
 ```bash
-mvn clean compile exec:java -Dexec.mainClass="convert.RdfToNeoImporter"
+./gradlew run -DmainClass=convert.RdfToNeoImporter
 ```
 
 The files are assumed to be in Turtle format.<br/>

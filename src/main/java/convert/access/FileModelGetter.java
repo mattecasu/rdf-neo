@@ -22,56 +22,54 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.google.common.collect.Maps.newHashMap;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.mapping;
-import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.*;
 
 @Slf4j
 public class FileModelGetter {
 
-    @Getter
-    private final Model model = new LinkedHashModel();
+  @Getter
+  private final Model model = new LinkedHashModel();
 
-    public FileModelGetter(DirectoryStream<Path> paths, RDFFormat format) {
-        paths.forEach(
-                path -> {
-                    try {
-                        Model parsedModel = Rio.parse(new FileInputStream(path.toFile()), "", format);
-                        model.addAll(parsedModel);
-                        parsedModel.getNamespaces().forEach(ns -> model.setNamespace(ns));
-                        model.setNamespace("rdf", RDF.NAMESPACE);
-                    } catch (IOException e) {
-                        log.warn("Problems in loading file " + path + ". It will be ignored.");
-                    }
-                }
+  public FileModelGetter(DirectoryStream<Path> paths, RDFFormat format) {
+    paths.forEach(
+        path -> {
+          try {
+            Model parsedModel = Rio.parse(new FileInputStream(path.toFile()), "", format);
+            model.addAll(parsedModel);
+            parsedModel.getNamespaces().forEach(ns -> model.setNamespace(ns));
+            model.setNamespace("rdf", RDF.NAMESPACE);
+          } catch (IOException e) {
+            log.warn("Problems in loading file " + path + ". It will be ignored.");
+          }
+        }
+    );
+  }
+
+  public Map<String, Map<String, Set<String>>> getObjects() {
+    return model
+        .filter(null, null, null)
+        .stream()
+        .filter(st -> st.getSubject() instanceof IRI)
+        .filter(st -> st.getObject() instanceof Literal || st.getPredicate().equals(RDF.TYPE))
+        .collect(groupingBy(
+            st -> st.getSubject().toString(),
+            () -> newHashMap(),
+            groupingBy(st -> st.getPredicate().toString(), () -> newHashMap(), mapping(st -> st.getObject().stringValue(), toSet())))
         );
-    }
+  }
 
-    public Map<String, Map<String, Set<String>>> getObjects() {
-        return model
-                .filter(null, null, null)
-                .stream()
-                .filter(st -> st.getSubject() instanceof IRI)
-                .filter(st -> st.getObject() instanceof Literal || st.getPredicate().equals(RDF.TYPE))
-                .collect(groupingBy(
-                        st -> st.getSubject().toString(),
-                        () -> newHashMap(),
-                        groupingBy(st -> st.getPredicate().toString(), () -> newHashMap(), mapping(st -> st.getObject().stringValue(), toSet())))
-                );
-    }
-
-    public Collection<Triple> getRelations() {
-        return model
-                .filter(null, null, null)
-                .stream()
-                .filter(st -> st.getSubject() instanceof IRI && st.getObject() instanceof IRI)
-                .map(st -> ImmutableTriple.of(st.getSubject(), st.getPredicate(), st.getObject()))
-                .collect(toSet());
-    }
+  public Collection<Triple> getRelations() {
+    return model
+        .filter(null, null, null)
+        .stream()
+        .filter(st -> st.getSubject() instanceof IRI && st.getObject() instanceof IRI)
+        .map(st -> ImmutableTriple.of(st.getSubject(), st.getPredicate(), st.getObject()))
+        .collect(toSet());
+  }
 
 
-    public Set<Namespace> getNss() {
-        return model.getNamespaces();
-    }
+  public Set<Namespace> getNss() {
+    return model.getNamespaces();
+  }
 
 }

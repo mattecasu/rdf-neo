@@ -20,75 +20,75 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 public class NeoTransducer {
 
-    private final String iriField;
-    private final Set<Namespace> nss;
+  private final String iriField;
+  private final Set<Namespace> nss;
 
-    public NeoTransducer(String iriField, Set<Namespace> nss) {
-        this.iriField = iriField;
-        this.nss = nss;
-    }
+  public NeoTransducer(String iriField, Set<Namespace> nss) {
+    this.iriField = iriField;
+    this.nss = nss;
+  }
 
-    public NeoTransducer importNodes(Map<String, Map<String, Set<String>>> objects, Session session) {
+  public NeoTransducer importNodes(Map<String, Map<String, Set<String>>> objects, Session session) {
 
-        objects.forEach(
-                (subject, props) -> {
+    objects.forEach(
+        (subject, props) -> {
 
-                    Map<String, Object> params = newHashMap();
-                    params.put(iriField, subject);
+          Map<String, Object> params = newHashMap();
+          params.put(iriField, subject);
 
-                    List<String> types = newArrayList();
-                    props.forEach(
-                            (predicate, listOfValues) -> {
-                                if (predicate.equals(RDF.TYPE.toString())) {
-                                    types.addAll(listOfValues.stream().map(t -> getCurie(nss, t)).collect(toList()));
-                                }
-                                params.put(getCurie(nss, predicate), listOfValues);
-                            });
-
-                    session.run(
-                            "CREATE (a" + formatTypesAsLabels(types) + formatStringParams(params) + ")",
-                            params);
+          List<String> types = newArrayList();
+          props.forEach(
+              (predicate, listOfValues) -> {
+                if (predicate.equals(RDF.TYPE.toString())) {
+                  types.addAll(listOfValues.stream().map(t -> getCurie(nss, t)).collect(toList()));
                 }
-        );
-        log.info("added nodes");
-        return this;
-    }
+                params.put(getCurie(nss, predicate), listOfValues);
+              });
+
+          session.run(
+              "CREATE (a" + formatTypesAsLabels(types) + formatStringParams(params) + ")",
+              params);
+        }
+    );
+    log.info("added nodes");
+    return this;
+  }
 
 
-    public NeoTransducer importRelations(Collection<Triple> relations, Session session) {
-        relations.stream().forEach(rel -> {
-            session.run(
-                    String.format("MATCH (n {%s:\"%s\"}) , (m {%s:\"%s\"}) create (n)-[:%s {%s:\"%s\"}]->(m);",
-                            iriField,
-                            rel.getLeft(),
-                            iriField,
-                            rel.getRight(),
-                            getCurie(nss, rel.getMiddle().toString()),
-                            iriField,
-                            rel.getMiddle().toString()
-                    )
-            );
-        });
-        log.info("added relations");
-        return this;
-    }
+  public NeoTransducer importRelations(Collection<Triple> relations, Session session) {
+    relations.stream().forEach(rel -> {
+      session.run(
+          String.format("MATCH (n {%s:\"%s\"}) , (m {%s:\"%s\"}) create (n)-[:%s {%s:\"%s\"}]->(m);",
+              iriField,
+              rel.getLeft(),
+              iriField,
+              rel.getRight(),
+              getCurie(nss, rel.getMiddle().toString()),
+              iriField,
+              rel.getMiddle().toString()
+          )
+      );
+    });
+    log.info("added relations");
+    return this;
+  }
 
-    public NeoTransducer clearDb(Session session) {
-        session.run("MATCH ()-[r]-() DELETE r");
-        session.run("MATCH (n) DELETE n");
-        return this;
-    }
+  public NeoTransducer clearDb(Session session) {
+    session.run("MATCH ()-[r]-() DELETE r");
+    session.run("MATCH (n) DELETE n");
+    return this;
+  }
 
 
-    private String formatTypesAsLabels(List<String> types) {
-        return types.stream().map(t -> getCurie(nss, t)).collect(joining(":", ":", "")) + " ";
-    }
+  private String formatTypesAsLabels(List<String> types) {
+    return types.stream().map(t -> getCurie(nss, t)).collect(joining(":", ":", "")) + " ";
+  }
 
-    private String formatStringParams(Map<String, Object> params) {
-        return params.keySet().stream()
-                .map(x -> x + ":{" + x + "}")
-                .collect(joining(", ", "{", "}"));
-    }
+  private String formatStringParams(Map<String, Object> params) {
+    return params.keySet().stream()
+        .map(x -> x + ":{" + x + "}")
+        .collect(joining(", ", "{", "}"));
+  }
 
 
 }

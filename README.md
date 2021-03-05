@@ -16,7 +16,7 @@ RDF properties having literals as objects are imported as node properties, while
 
 While the current implementation preserves ground information, it only partially preserves the ontological schema, for it ignores blank nodes.
 
-Any IRI that is imported as a property key or as a relation is saved in its abbreviated form (curie: <a hef="http://www.w3.org/TR/curie"> http://www.w3.org/TR/curie</a>) by using the namespaces present in the files. The import will break when trying to save a IRI as property key or relation without a prior curie transformation.
+Any IRI that is imported as a property key or as a relation is saved in its abbreviated form (curie: <a hef="http://www.w3.org/TR/curie">http://www.w3.org/TR/curie </a>) by using the namespaces present in the files. The import will break when trying to save a IRI as property key or relation without a prior curie transformation.
 
 The name of the field hosting the IRI of the resource can be specified in the property field.
 

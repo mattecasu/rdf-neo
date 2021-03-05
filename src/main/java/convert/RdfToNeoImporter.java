@@ -3,10 +3,10 @@ package convert;
 import convert.access.FileModelGetter;
 import convert.access.NeoTransducer;
 import org.eclipse.rdf4j.rio.RDFFormat;
-import org.neo4j.driver.v1.AuthTokens;
-import org.neo4j.driver.v1.Driver;
-import org.neo4j.driver.v1.GraphDatabase;
-import org.neo4j.driver.v1.Session;
+import org.neo4j.driver.AuthTokens;
+import org.neo4j.driver.Driver;
+import org.neo4j.driver.GraphDatabase;
+import org.neo4j.driver.Session;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,38 +19,38 @@ import java.util.Properties;
 
 public class RdfToNeoImporter {
 
-  public static void main(String... args) throws IOException {
+    public static void main(String... args) throws IOException {
 
-    InputStream inputStream = RdfToNeoImporter.class.getClassLoader().getResourceAsStream("application.properties");
-    Properties props = new Properties();
-    props.load(inputStream);
+        InputStream inputStream = RdfToNeoImporter.class.getClassLoader().getResourceAsStream("application.properties");
+        Properties props = new Properties();
+        props.load(inputStream);
 
-    String neoUser = props.getProperty("neo.username");
-    String neoPwd = props.getProperty("neo.password");
-    String host = props.getProperty("neo.host");
-    String iriField = props.getProperty("irifield");
+        String neoUser = props.getProperty("neo.username");
+        String neoPwd = props.getProperty("neo.password");
+        String host = props.getProperty("neo.host");
+        String iriField = props.getProperty("irifield");
 
-    DirectoryStream<Path> rdfFiles = Files.newDirectoryStream(
-        Paths.get(props.getProperty("filesFolder")),
-        "*.{ttl}"
-    );
+        DirectoryStream<Path> rdfFiles = Files.newDirectoryStream(
+                Paths.get(props.getProperty("filesFolder")),
+                "*.{ttl}"
+        );
 
-    inputStream.close();
+        inputStream.close();
 
-    FileModelGetter modelGetter = new FileModelGetter(rdfFiles, RDFFormat.TURTLE);
+        FileModelGetter modelGetter = new FileModelGetter(rdfFiles, RDFFormat.TURTLE);
 
-    Driver driver = GraphDatabase.driver("bolt://" + host, AuthTokens.basic(neoUser, neoPwd));
+        Driver driver = GraphDatabase.driver("bolt://" + host, AuthTokens.basic(neoUser, neoPwd));
 
-    Session session = driver.session();
+        Session session = driver.session();
 
-    new NeoTransducer(iriField, modelGetter.getNss())
-        .clearDb(session)
-        .importNodes(modelGetter.getObjects(), session)
-        .importRelations(modelGetter.getRelations(), session);
+        new NeoTransducer(iriField, modelGetter.getNss())
+                .clearDb(session)
+                .importNodes(modelGetter.getObjects(), session)
+                .importRelations(modelGetter.getRelations(), session);
 
-    session.close();
-    driver.close();
-  }
+        session.close();
+        driver.close();
+    }
 
 
 }

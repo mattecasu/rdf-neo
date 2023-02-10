@@ -13,6 +13,7 @@ e.g. with
 
 The files are assumed to be in Turtle format.<br/>
 The script assumes a running Neo4j server (the host and port are specified via properties).
+For example: https://hub.docker.com/_/neo4j .
 
 ## Import
 

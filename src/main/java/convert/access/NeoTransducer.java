@@ -86,7 +86,7 @@ public class NeoTransducer {
 
     private String formatStringParams(Map<String, Object> params) {
         return params.keySet().stream()
-                .map(x -> x + ":{" + x + "}")
+                .map(x -> x + ":$" + x)
                 .collect(joining(", ", "{", "}"));
     }
 

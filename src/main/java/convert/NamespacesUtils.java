@@ -1,8 +1,7 @@
 package convert;
 
-import org.eclipse.rdf4j.model.Namespace;
-
 import java.util.Set;
+import org.eclipse.rdf4j.model.Namespace;
 
 public class NamespacesUtils {
 
@@ -13,5 +12,4 @@ public class NamespacesUtils {
         .map(n -> n.getPrefix() + "__" + iri.replace(n.getName(), ""))
         .orElse(iri);
   }
-
 }

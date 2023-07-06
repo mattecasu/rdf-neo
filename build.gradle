@@ -10,11 +10,16 @@ repositories {
 dependencies {
     implementation "org.eclipse.rdf4j:rdf4j-runtime:${rdf4Version}"
     implementation "org.neo4j.driver:neo4j-java-driver:${neo4jJavaVersion}"
-    implementation "com.google.guava:guava:32.0.1-jre"
+    implementation "com.google.guava:guava:32.1.1-jre"
     implementation "org.apache.commons:commons-lang3:3.12.0"
     implementation "org.slf4j:slf4j-simple:2.0.7"
     implementation "org.slf4j:slf4j-api:2.0.7"
-    testImplementation "junit:junit:4.13.2"
+
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.2"
+
+    // JUnit 5
+    testImplementation "org.junit.jupiter:junit-jupiter:${jUnitVersion}"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
 
 group = 'convert'
@@ -23,4 +28,8 @@ version = '1.0-SNAPSHOT'
 tasks.register('run', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "convert.RdfToNeoImporter"
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
 }

@@ -2,5 +2,5 @@ neo:
   username: neo4j
   password: password
   host: localhost:7687
-irifield: iri
+iriField: iri
 filesFolder: src/main/resources/files

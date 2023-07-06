@@ -7,7 +7,6 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 import org.eclipse.rdf4j.rio.RDFFormat;
 import org.neo4j.driver.AuthTokens;
 import org.neo4j.driver.Driver;
@@ -20,23 +19,21 @@ public class RdfToNeoImporter {
 
     var props = PropsGetter.getProperties("application.yaml");
 
-    Map<String, Object> neoProps = (Map<String, Object>) props.get("neo");
-    String neoUser = neoProps.get("username").toString();
-    String neoPwd = neoProps.get("password").toString();
-    String host = neoProps.get("host").toString();
-
-    String iriField = props.get("irifield").toString();
+    var neoProps = props.getNeo();
 
     DirectoryStream<Path> rdfFiles =
-        Files.newDirectoryStream(Paths.get(props.get("filesFolder").toString()), "*.{ttl}");
+        Files.newDirectoryStream(Paths.get(props.getFilesFolder()), "*.{ttl}");
 
     FileModelGetter modelGetter = new FileModelGetter(rdfFiles, RDFFormat.TURTLE);
 
-    Driver driver = GraphDatabase.driver("bolt://" + host, AuthTokens.basic(neoUser, neoPwd));
+    Driver driver =
+        GraphDatabase.driver(
+            "bolt://" + neoProps.getHost(),
+            AuthTokens.basic(neoProps.getUsername(), neoProps.getPassword()));
 
     Session session = driver.session();
 
-    new NeoTransducer(iriField, modelGetter.getNss())
+    new NeoTransducer(props.getIriField(), modelGetter.getNss())
         .clearDb(session)
         .importNodes(modelGetter.getObjects(), session)
         .importRelations(modelGetter.getRelations(), session);

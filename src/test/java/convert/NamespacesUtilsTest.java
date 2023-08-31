@@ -18,7 +18,7 @@ class NamespacesUtilsTest {
 
   @Test
   void getCurie() {
-    assertEquals(NamespacesUtils.getCurie(nss, RDF.TYPE.stringValue()), "rdf___type");
+    assertEquals(NamespacesUtils.getCurie(nss, RDF.TYPE.stringValue()), "rdf__type");
     assertEquals(NamespacesUtils.getCurie(nss, OWL.CLASS.stringValue()), "owl__Class");
   }
 }

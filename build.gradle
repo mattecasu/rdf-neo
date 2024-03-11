@@ -15,7 +15,7 @@ def jUnitVersion = "5.10.2"
 def slf4jVersion = "2.0.12"
 def guavaVersion = "33.0.0-jre"
 def commonsLangVersion = "3.14.0"
-def jacksonDataFormatVersion = "2.16.1"
+def jacksonDataFormatVersion = "2.16.2"
 
 dependencies {
 

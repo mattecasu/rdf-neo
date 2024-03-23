@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id "io.freefair.lombok" version "8.4"
+    id "io.freefair.lombok" version "8.6"
 }
 
 repositories {
@@ -9,13 +9,13 @@ repositories {
 
 // only var-assignment method recognised by Dependabot,
 // see https://github.com/dependabot/dependabot-core/issues/1618
-def rdf4Version = "4.3.8"
-def neo4jJavaVersion = "5.15.0"
-def jUnitVersion = "5.10.1"
-def slf4jVersion = "2.0.9"
+def rdf4Version = "4.3.10"
+def neo4jJavaVersion = "5.18.0"
+def jUnitVersion = "5.10.2"
+def slf4jVersion = "2.0.12"
 def guavaVersion = "33.0.0-jre"
 def commonsLangVersion = "3.14.0"
-def jacksonDataFormatVersion = "2.16.1"
+def jacksonDataFormatVersion = "2.16.2"
 
 dependencies {
 

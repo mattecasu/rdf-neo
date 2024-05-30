@@ -13,7 +13,7 @@ def rdf4Version = "4.3.11"
 def neo4jJavaVersion = "5.20.0"
 def jUnitVersion = "5.10.2"
 def slf4jVersion = "2.0.13"
-def guavaVersion = "33.1.0-jre"
+def guavaVersion = "33.2.0-jre"
 def commonsLangVersion = "3.14.0"
 def jacksonDataFormatVersion = "2.17.0"
 

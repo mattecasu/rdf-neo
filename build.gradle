@@ -11,7 +11,7 @@ repositories {
 // see https://github.com/dependabot/dependabot-core/issues/1618
 def rdf4Version = "5.0.2"
 def neo4jJavaVersion = "5.23.0"
-def jUnitVersion = "5.10.2"
+def jUnitVersion = "5.10.3"
 def slf4jVersion = "2.0.13"
 def guavaVersion = "33.2.1-jre"
 def commonsLangVersion = "3.15.0"

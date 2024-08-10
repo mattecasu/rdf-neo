@@ -4,7 +4,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static convert.NamespacesUtils.getCurie;
 import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
 
 import java.util.Collection;
 import java.util.List;
@@ -38,7 +37,7 @@ public class NeoTransducer {
           props.forEach(
               (predicate, listOfValues) -> {
                 if (predicate.equals(RDF.TYPE.toString())) {
-                  types.addAll(listOfValues.stream().map(t -> getCurie(nss, t)).collect(toList()));
+                  types.addAll(listOfValues.stream().map(t -> getCurie(nss, t)).toList());
                 }
                 params.put(getCurie(nss, predicate), listOfValues);
               });

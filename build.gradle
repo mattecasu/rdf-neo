@@ -14,7 +14,7 @@ def neo4jJavaVersion = "5.23.0"
 def jUnitVersion = "5.10.3"
 def slf4jVersion = "2.0.16"
 def guavaVersion = "33.2.1-jre"
-def commonsLangVersion = "3.16.0"
+def commonsLangVersion = "3.17.0"
 def jacksonDataFormatVersion = "2.17.2"
 
 dependencies {

@@ -10,7 +10,7 @@ repositories {
 // only var-assignment method recognised by Dependabot,
 // see https://github.com/dependabot/dependabot-core/issues/1618
 def rdf4Version = "5.0.2"
-def neo4jJavaVersion = "5.24.0"
+def neo4jJavaVersion = "5.25.0"
 def jUnitVersion = "5.11.0"
 def slf4jVersion = "2.0.16"
 def guavaVersion = "33.3.0-jre"

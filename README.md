@@ -2,6 +2,17 @@
 
 Importer RDF2Neo4j
 
+## Neo4j
+
+```
+docker run \
+    --restart always \
+    --publish=7474:7474 --publish=7687:7687 \
+    --env NEO4J_AUTH=neo4j/password \
+    --volume=/path/to/your/data:/data \
+    neo4j
+```
+
 ## Run
 
 Change application.yaml if needed, and then Run RdfToNeoImporter's main,

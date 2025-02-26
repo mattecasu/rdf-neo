@@ -4,7 +4,7 @@ Importer RDF2Neo4j
 
 ## Run
 
-Change application.properties if needed, and then Run RdfToNeoImporter's main,
+Change application.yaml if needed, and then Run RdfToNeoImporter's main,
 e.g. with
 
 ```bash

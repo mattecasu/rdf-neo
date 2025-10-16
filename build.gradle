@@ -1,10 +1,10 @@
 plugins {
-    id 'java'
-    id "io.freefair.lombok" version "8.13.1"
+  id 'java-library'
+  id("io.freefair.lombok") version "9.0.0"
 }
 
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 // only var-assignment method recognised by Dependabot,
@@ -19,31 +19,31 @@ def jacksonDataFormatVersion = "2.18.3"
 
 dependencies {
 
-    // minimal rdf4j
-    implementation "org.eclipse.rdf4j:rdf4j-model:${rdf4Version}"
-    implementation "org.eclipse.rdf4j:rdf4j-rio-turtle:${rdf4Version}"
+  // minimal rdf4j
+  implementation("org.eclipse.rdf4j:rdf4j-model:${rdf4Version}")
+  implementation("org.eclipse.rdf4j:rdf4j-rio-turtle:${rdf4Version}")
 
-    implementation "org.neo4j.driver:neo4j-java-driver:${neo4jJavaVersion}"
-    implementation "com.google.guava:guava:${guavaVersion}"
-    implementation "org.apache.commons:commons-lang3:${commonsLangVersion}"
-    implementation "org.slf4j:slf4j-simple:${slf4jVersion}"
-    implementation "org.slf4j:slf4j-api:${slf4jVersion}"
+  implementation("org.neo4j.driver:neo4j-java-driver:${neo4jJavaVersion}")
+  implementation("com.google.guava:guava:${guavaVersion}")
+  implementation("org.apache.commons:commons-lang3:${commonsLangVersion}")
+  implementation("org.slf4j:slf4j-simple:${slf4jVersion}")
+  implementation("org.slf4j:slf4j-api:${slf4jVersion}")
 
-    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonDataFormatVersion}"
+  implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonDataFormatVersion}")
 
-    // JUnit 5
-    testImplementation "org.junit.jupiter:junit-jupiter:${jUnitVersion}"
-    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+  // JUnit 5
+  testImplementation("org.junit.jupiter:junit-jupiter:${jUnitVersion}")
+  testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 group = 'convert'
 version = '1.0-SNAPSHOT'
 
 tasks.register('run', JavaExec) {
-    classpath = sourceSets.main.runtimeClasspath
-    mainClass = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "convert.RdfToNeoImporter"
+  classpath = sourceSets.main.runtimeClasspath
+  main = project.findProperty("mainClass") ?: "convert.RdfToNeoImporter"
 }
 
 tasks.named('test', Test) {
-    useJUnitPlatform()
+  useJUnitPlatform()
 }
